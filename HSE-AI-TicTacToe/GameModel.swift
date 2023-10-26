@@ -132,13 +132,30 @@ final class GameModel {
             bestMove = result.sorted{$0.key < $1.key}.max{$0.value < $1.value}!.key
         }
 
-        // Для первой итерации возвращаем лучший ход
+        // Для первой итерации возвращаем лучший ход и выводим статистику
         if depth == 0 {
+            print("\n\nОценки ходов:")
+            print(result.sorted{$0.key < $1.key})
+            print("\nЛучшей ход с оценкой [\(result.sorted{$0.key < $1.key}.max{$0.value < $1.value}!.value)] имеют клетки с индексом: \(detectSameValue(dictionary: result)[result.sorted{$0.key < $1.key}.max{$0.value < $1.value}!.value] ?? [])")
             return bestMove
         }
         else {
             // Для остальных итераций возвращаем оценку, чтобы она возвращалась/поднималась по дереву
             return bestScore
         }
+    }
+
+    func detectSameValue(dictionary: [Int:Int]) -> [Int: [Int]] {
+        var valueToKeysMap: [Int: [Int]] = [:]
+
+        for (key, value) in dictionary {
+            if valueToKeysMap[value] == nil {
+                valueToKeysMap[value] = [key]
+            } else {
+                valueToKeysMap[value]?.append(key)
+            }
+        }
+
+        return valueToKeysMap
     }
 }

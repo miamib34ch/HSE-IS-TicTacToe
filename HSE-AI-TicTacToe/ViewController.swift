@@ -9,16 +9,16 @@ import UIKit
 
 final class ViewController: UIViewController {
     private let winnerLabel = CustomUILabel()
-    private let restartButton = UIButton()
     private let fieldCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    
+    private let restartButton = UIButton()
+
     let gameModel = GameModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "BackgroundColor")
-        configureFieldCollection()
         configureWinnerLabel()
+        configureFieldCollection()
         configureRestartButton()
         gameModel.startGame()
     }
@@ -35,8 +35,23 @@ final class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             winnerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             winnerLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            winnerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            winnerLabel.heightAnchor.constraint(equalToConstant: 40)
+            winnerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            winnerLabel.heightAnchor.constraint(equalToConstant: 36)
+        ])
+    }
+
+    private func configureFieldCollection() {
+        fieldCollection.backgroundColor = .clear
+        fieldCollection.dataSource = self
+        fieldCollection.delegate = self
+        fieldCollection.register(ViewControllerCollectionCell.self)
+        fieldCollection.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(fieldCollection)
+        NSLayoutConstraint.activate([
+            fieldCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            fieldCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            fieldCollection.topAnchor.constraint(equalTo: winnerLabel.bottomAnchor, constant: 20),
+            fieldCollection.heightAnchor.constraint(equalToConstant: (view.frame.width - 32) + 48)
         ])
     }
 
@@ -53,27 +68,10 @@ final class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             restartButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             restartButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            restartButton.topAnchor.constraint(equalTo: winnerLabel.bottomAnchor, constant: 10),
-            restartButton.bottomAnchor.constraint(equalTo: fieldCollection.topAnchor,constant: -30),
-            restartButton.heightAnchor.constraint(equalToConstant: 40)
+            restartButton.topAnchor.constraint(equalTo: fieldCollection.bottomAnchor)
         ])
     }
 
-    private func configureFieldCollection() {
-        fieldCollection.backgroundColor = .clear
-        fieldCollection.dataSource = self
-        fieldCollection.delegate = self
-        fieldCollection.register(ViewControllerCollectionCell.self)
-        fieldCollection.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(fieldCollection)
-        NSLayoutConstraint.activate([
-            fieldCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            fieldCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            fieldCollection.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            fieldCollection.heightAnchor.constraint(equalToConstant: 500)
-        ])
-    }
-    
     func secondPlayerMove(index: Int) {
         let cell: ViewControllerCollectionCell = fieldCollection.cellForItem(at: IndexPath(row: index, section: 0))
         cell.cellButtonTap()
