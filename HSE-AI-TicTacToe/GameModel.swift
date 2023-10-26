@@ -121,7 +121,7 @@ final class GameModel {
             }
         }
 
-        var sortedResult = result.sorted{$0.key < $1.key}
+        let sortedResult = result.sorted{$0.key < $1.key}
         // Выбираем лучший ход для игрока
         if player == .first {
             // Если мы - первый игрок, то лучшим для нас ходом будет тот, у которого меньше оценка, поскольку для компьютера в такие ходы шло наказание и врятли он в нём выйграет
