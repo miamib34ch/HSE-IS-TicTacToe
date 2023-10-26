@@ -11,6 +11,9 @@ final class ViewControllerCollectionCell: UICollectionViewCell, ReuseIdentifying
     var viewController: ViewController?
     var indexOfCell: Int?
 
+    private var firstPlayerImage = UIImage(named: "FirstPlayer")?.withRenderingMode(.alwaysOriginal).withTintColor(.systemBlue)
+    private var secondPlayerImage = UIImage(named: "SecondPlayer")?.withRenderingMode(.alwaysOriginal).withTintColor(.red)
+
     private let cellButton: UIButton = {
         let button = UIButton()
         button.contentMode = .scaleAspectFill
@@ -51,10 +54,10 @@ final class ViewControllerCollectionCell: UICollectionViewCell, ReuseIdentifying
             // Делаем ход
             switch gameModel.activePlayer {
             case .first:
-                cellButton.setImage(UIImage(named: "FirstPlayer"), for: .normal)
+                cellButton.setImage(firstPlayerImage, for: .normal)
                 gameModel.addCellInSet(cellIndex: indexOfCell, player: .first)
             case .second:
-                cellButton.setImage(UIImage(named: "SecondPlayer"), for: .normal)
+                cellButton.setImage(secondPlayerImage, for: .normal)
                 gameModel.addCellInSet(cellIndex: indexOfCell, player: .second)
             }
 

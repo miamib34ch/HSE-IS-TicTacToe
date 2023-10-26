@@ -8,37 +8,19 @@
 import UIKit
 
 final class ViewController: UIViewController {
-    private let restartButton = UIButton()
     private let winnerLabel = CustomUILabel()
+    private let restartButton = UIButton()
     private let fieldCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     let gameModel = GameModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .gray
+        view.backgroundColor = UIColor(named: "BackgroundColor")
         configureFieldCollection()
-        configureRestartButton()
         configureWinnerLabel()
+        configureRestartButton()
         gameModel.startGame()
-    }
-    
-    private func configureRestartButton() {
-        restartButton.backgroundColor = .white
-        restartButton.setTitle("Заново", for: .normal)
-        restartButton.setTitleColor(.black, for: .normal)
-        restartButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-        restartButton.layer.cornerRadius = 8
-        restartButton.layer.masksToBounds = true
-        restartButton.addTarget(self, action: #selector(restartButtonTap), for: .touchUpInside)
-        restartButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(restartButton)
-        NSLayoutConstraint.activate([
-            restartButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            restartButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            restartButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            restartButton.heightAnchor.constraint(equalToConstant: 40)
-        ])
     }
     
     private func configureWinnerLabel() {
@@ -53,12 +35,30 @@ final class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             winnerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             winnerLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            winnerLabel.topAnchor.constraint(equalTo: restartButton.bottomAnchor, constant: 10),
-            winnerLabel.bottomAnchor.constraint(equalTo: fieldCollection.topAnchor,constant: -30),
+            winnerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             winnerLabel.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
-    
+
+    private func configureRestartButton() {
+        restartButton.backgroundColor = .white
+        restartButton.setTitle("Заново", for: .normal)
+        restartButton.setTitleColor(.black, for: .normal)
+        restartButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        restartButton.layer.cornerRadius = 8
+        restartButton.layer.masksToBounds = true
+        restartButton.addTarget(self, action: #selector(restartButtonTap), for: .touchUpInside)
+        restartButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(restartButton)
+        NSLayoutConstraint.activate([
+            restartButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            restartButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            restartButton.topAnchor.constraint(equalTo: winnerLabel.bottomAnchor, constant: 10),
+            restartButton.bottomAnchor.constraint(equalTo: fieldCollection.topAnchor,constant: -30),
+            restartButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+
     private func configureFieldCollection() {
         fieldCollection.backgroundColor = .clear
         fieldCollection.dataSource = self
@@ -83,7 +83,7 @@ final class ViewController: UIViewController {
         switch player {
         case .first:
             winnerLabel.text = "Победитель: Вы"
-            winnerLabel.textColor = .systemGreen
+            winnerLabel.textColor = .systemBlue
         case .second:
             winnerLabel.text = "Победитель: Компьютер"
             winnerLabel.textColor = .red
