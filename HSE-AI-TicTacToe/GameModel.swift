@@ -121,22 +121,23 @@ final class GameModel {
             }
         }
 
+        var sortedResult = result.sorted{$0.key < $1.key}
         // Выбираем лучший ход для игрока
         if player == .first {
             // Если мы - первый игрок, то лучшим для нас ходом будет тот, у которого меньше оценка, поскольку для компьютера в такие ходы шло наказание и врятли он в нём выйграет
-            bestScore = result.sorted{$0.key < $1.key}.min{$0.value < $1.value}!.value
-            bestMove = result.sorted{$0.key < $1.key}.min{$0.value < $1.value}!.key
+            bestScore = sortedResult.min{$0.value < $1.value}!.value
+            bestMove = sortedResult.min{$0.value < $1.value}!.key
         } else {
             // Если мы - второй игрок, то лучшим для нас ходом будет тот, у которого больше оценка, поскольку там шло поощрение и, скорее всего, мы в нём выйграем
-            bestScore = result.sorted{$0.key < $1.key}.max{$0.value < $1.value}!.value
-            bestMove = result.sorted{$0.key < $1.key}.max{$0.value < $1.value}!.key
+            bestScore = sortedResult.max{$0.value < $1.value}!.value
+            bestMove = sortedResult.max{$0.value < $1.value}!.key
         }
 
         // Для первой итерации возвращаем лучший ход и выводим статистику
         if depth == 0 {
             print("\n\nОценки ходов:")
-            print(result.sorted{$0.key < $1.key})
-            print("\nЛучшей ход с оценкой [\(result.sorted{$0.key < $1.key}.max{$0.value < $1.value}!.value)] имеют клетки с индексом: \(detectSameValue(dictionary: result)[result.sorted{$0.key < $1.key}.max{$0.value < $1.value}!.value] ?? [])")
+            print(sortedResult)
+            print("\nЛучшей ход с оценкой [\(bestScore)] имеют клетки с индексом: \(detectSameValue(dictionary: result)[bestScore] ?? [])")
             return bestMove
         }
         else {
@@ -145,7 +146,7 @@ final class GameModel {
         }
     }
 
-    func detectSameValue(dictionary: [Int:Int]) -> [Int: [Int]] {
+    private func detectSameValue(dictionary: [Int:Int]) -> [Int: [Int]] {
         var valueToKeysMap: [Int: [Int]] = [:]
 
         for (key, value) in dictionary {
