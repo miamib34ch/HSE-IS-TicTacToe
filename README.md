@@ -1,4 +1,4 @@
-# HSE-AI-TicTacToe
+# HSE-AI-TicTacToe 
 
 [Скринкаст приложения](https://youtu.be/PHhV3hwRAFA)
 
